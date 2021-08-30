@@ -1,0 +1,39 @@
+{
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint", "sort-export-all"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:import/recommended",
+    "plugin:import/typescript"
+  ],
+  "settings": {
+    "import/resolver": "typescript"
+  },
+  "rules": {
+    // javascript
+    "no-var": ["warn"],
+    "prefer-arrow-callback": ["warn"],
+
+    // typescript
+    "@typescript-eslint/naming-convention": [
+      "warn",
+      { "selector": "default", "format": ["camelCase", "PascalCase"] },
+      { "selector": "typeLike", "format": ["PascalCase"] }
+    ],
+
+    // import
+    "import/no-duplicates": ["warn"],
+    "import/first": ["warn"],
+    "import/newline-after-import": ["warn"],
+    "import/order": [
+      "warn",
+      { "alphabetize": { "order": "asc" }, "newlines-between": "always" }
+    ],
+
+    // export
+    "import/no-default-export": ["warn"],
+    "sort-export-all/sort-export-all": ["warn"]
+  }
+}
