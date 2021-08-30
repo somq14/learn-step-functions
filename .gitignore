@@ -2,4 +2,7 @@ node_modules/
 dist/
 coverage/
 
+.aws-sam/
+samconfig.toml
+
 *.log

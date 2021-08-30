@@ -1,0 +1,23 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+
+Globals:
+  Function:
+    Runtime: nodejs14.x
+
+Resources:
+  ExampleStateMachine:
+    Type: AWS::Serverless::StateMachine
+    Properties:
+      DefinitionUri: state-machines/example.yaml
+      DefinitionSubstitutions:
+        ExampleFunction: !Sub ${ExampleFunction.Arn}
+      Policies:
+        - LambdaInvokePolicy:
+            FunctionName: !Ref ExampleFunction
+
+  ExampleFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: example-function/handler.handler
+      CodeUri: scripts/package/package.zip

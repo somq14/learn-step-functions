@@ -1,0 +1,6 @@
+StartAt: FirstState
+States:
+  FirstState:
+    Type: Task
+    Resource: ${ExampleFunction}
+    End: true
