@@ -1,6 +1,10 @@
 AWSTemplateFormatVersion: "2010-09-09"
 Transform: AWS::Serverless-2016-10-31
 
+Parameters:
+  AlertMailAddress:
+    Type: String
+
 Globals:
   Function:
     Runtime: nodejs14.x
@@ -21,3 +25,29 @@ Resources:
     Properties:
       Handler: example-function/handler.handler
       CodeUri: scripts/package/package.zip
+
+  AlertRule:
+    Type: AWS::Events::Rule
+    Properties:
+      EventPattern:
+        source:
+          - aws.states
+        detail-type:
+          - Step Functions Execution Status Change
+        detail:
+          status:
+            - FAILED
+            - TIMED_OUT
+            - ABORTED
+          stateMachineArn:
+            - !Ref ExampleStateMachine
+      Targets:
+        - Id: !Sub ${AWS::StackName}-${AWS::AccountId}
+          Arn: !Ref AlertTopic
+
+  AlertTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      Subscription:
+        - Protocol: email
+          Endpoint: !Ref AlertMailAddress
